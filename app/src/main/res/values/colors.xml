@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="main_color">#8502D6</color>
+    <color name="dark_purple">#38005A</color>
+    <color name="color_background">#FFFFFFFF</color>
+
+    <dimen name="primary_text_size">@dimen/_10ssp</dimen>
+
+    <!-- Text Colors -->
+    <color name="color_text_primary_title">#FFFFFFFF</color>
+    <color name="color_text_secondary_title">#0086fe</color>
+    <color name="color_text_primary_sub_title">#0045a3</color>
+    <color name="color_text_primary">#1c1c1c</color>
+    <color name="color_text_secondary">#757575</color>
+    <color name="color_text_black">#000000</color>
+    <color name="color_hint_input_text">#ffffff</color>
+
+    <!-- Primary Colors -->
+    <color name="color_primary_light_blue">#0086fe</color>
+    <color name="color_primary_link_blue">#1aa0de</color>
+    <color name="color_primary_gray">#C0C0C0</color>
+    <color name="color_primary_light_gray">#F5F5F5</color>
+    <color name="color_primary_black">#000000</color>
+
+    <!-- Background Colors -->
+    <color name="color_background_primary">#ffffff</color>
+    <color name="color_background_secondary">#f3f4f7</color>
+    <color name="color_background_sent_message">#7EB2D5</color>
+    <color name="color_background_chat_room">#b1ddf5</color>
+    <color name="color_background_chat_navbar_room">#0866ff</color>
+
+    <color name="color_bottom_navigation_background">#fbfcfd</color>
+
+    <!-- Button Colors -->
+    <!-- Primary Highlight Button -->
+    <color name="color_button_primary_highlight_bg">#0086fe</color>
+    <color name="color_button_primary_highlight_text">#ffffff</color>
+    <!-- Tertiary Highlight Button -->
+    <color name="color_button_tertiary_highlight_bg">@android:color/transparent</color>
+    <color name="color_button_tertiary_highlight_text">#216af5</color>
+
+    <color name="color_disabled_button">#d6d9db</color>
+
+    <!-- Toast Colors -->
+    <color name="color_toast_background">#252627</color>
+
+    <!-- Success and Error Colors -->
+    <color name="color_success">#33b864</color>
+    <color name="color_error">#dc1f17</color>
+
+</resources>

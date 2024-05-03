@@ -1,0 +1,23 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.GoogleMLKitDemoApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/color_primary_light_blue</item>
+        <item name="android:fontFamily">@font/opensans_regular</item>
+
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="Theme.GoogleMLKitDemoApp" parent="Base.Theme.GoogleMLKitDemoApp" />
+
+    <!-- Button -->
+    <style name="ButtonPrimaryHighlight">
+        <item name="android:textSize">@dimen/primary_text_size</item>
+        <item name="android:textColor">@color/color_button_primary_highlight_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:backgroundTint">@color/button_primary_highlight_color_selector</item>
+        <item name="iconTint">@color/color_button_primary_highlight_text</item>
+        <item name="iconSize">@dimen/_20sdp</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+    />
+</resources>
