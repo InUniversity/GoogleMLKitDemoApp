@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">GoogleMLKitDemoApp</string>
+    <string name="title">Text Recognition</string>
+    <string name="btn_input">Choose image</string>
+    <string name="btn_copy">Copy</string>
+    <string name="txv_result">Result</string>
+    <string name="txv_language">Language?</string>
 </resources>

@@ -51,4 +51,5 @@
     <color name="color_success">#33b864</color>
     <color name="color_error">#dc1f17</color>
 
+    <color name="color_primary">#349cfd</color>
 </resources>
