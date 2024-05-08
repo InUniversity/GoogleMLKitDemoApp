@@ -9,6 +9,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +17,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.googlemlkitdemoapp.analyzer.TextAnalyzer;
 import com.example.googlemlkitdemoapp.databinding.ActivityMainBinding;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private Bitmap selectedImage;
+    private TextRecognizer recognizer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +98,13 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = data.getData();
                 setSelectedImage(uri);
                 toggleSelectImageBtnState(false);
+
+                recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+                TextAnalyzer analyzer = new TextAnalyzer(recognizer);
+
+                analyzer.analyze(this.selectedImage, textResult -> {
+                    binding.txvResult.setText(textResult);
+                });
             });
 
     private void clearOldSelectedImage() {
