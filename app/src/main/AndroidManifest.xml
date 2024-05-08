@@ -11,6 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GoogleMLKitDemoApp"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="langid" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
