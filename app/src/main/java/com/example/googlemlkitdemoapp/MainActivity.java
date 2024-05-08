@@ -1,21 +1,20 @@
 package com.example.googlemlkitdemoapp;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.googlemlkitdemoapp.analyzer.TextAnalyzer;
@@ -24,7 +23,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.mlkit.nl.languageid.LanguageIdentification;
 import com.google.mlkit.nl.languageid.LanguageIdentifier;
-import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
@@ -36,6 +34,43 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private Bitmap selectedImage;
     private TextRecognizer recognizer;
+    private final ActivityResultLauncher<Intent> pickerImageResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() != RESULT_OK) {
+                    toggleSelectImageBtnState(false);
+                    return;
+                }
+
+                clearOldSelectedImage();
+
+                Intent data = result.getData();
+                if (data == null) {
+                    Toast.makeText(getApplicationContext(), "You haven't picked Image", Toast.LENGTH_SHORT)
+                            .show();
+                    toggleSelectImageBtnState(false);
+                    return;
+                }
+
+                if (data.getClipData() != null) {
+                    Toast.makeText(getApplicationContext(), "Unsupported: Please pick only one image", Toast.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+
+                Uri uri = data.getData();
+                setSelectedImage(uri);
+                toggleSelectImageBtnState(false);
+
+                recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+                TextAnalyzer analyzer = new TextAnalyzer(recognizer);
+
+                analyzer.analyze(this.selectedImage, textResult -> {
+                    binding.txvResult.setText(textResult);
+
+                    identifyLanguage(textResult);
+                });
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,44 +110,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Text copied to clipboard", Toast.LENGTH_SHORT)
                 .show();
     }
-
-    private final ActivityResultLauncher<Intent> pickerImageResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() != RESULT_OK) {
-                    toggleSelectImageBtnState(false);
-                    return;
-                }
-
-                clearOldSelectedImage();
-
-                Intent data = result.getData();
-                if (data == null) {
-                    Toast.makeText(getApplicationContext(), "You haven't picked Image", Toast.LENGTH_SHORT)
-                            .show();
-                    toggleSelectImageBtnState(false);
-                    return;
-                }
-
-                if (data.getClipData() != null) {
-                    Toast.makeText(getApplicationContext(), "Unsupported: Please pick only one image", Toast.LENGTH_SHORT)
-                            .show();
-                    return;
-                }
-
-                Uri uri = data.getData();
-                setSelectedImage(uri);
-                toggleSelectImageBtnState(false);
-
-                recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
-                TextAnalyzer analyzer = new TextAnalyzer(recognizer);
-
-                analyzer.analyze(this.selectedImage, textResult -> {
-                    binding.txvResult.setText(textResult);
-
-                    identifyLanguage(textResult);
-                });
-            });
 
     private void identifyLanguage(String text) {
         LanguageIdentifier languageIdentifier = LanguageIdentification.getClient();
