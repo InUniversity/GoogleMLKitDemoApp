@@ -2,6 +2,7 @@ package com.example.googlemlkitdemoapp;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ClipData;
@@ -19,6 +20,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.googlemlkitdemoapp.analyzer.TextAnalyzer;
 import com.example.googlemlkitdemoapp.databinding.ActivityMainBinding;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.mlkit.nl.languageid.LanguageIdentification;
+import com.google.mlkit.nl.languageid.LanguageIdentifier;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
@@ -104,8 +109,34 @@ public class MainActivity extends AppCompatActivity {
 
                 analyzer.analyze(this.selectedImage, textResult -> {
                     binding.txvResult.setText(textResult);
+
+                    identifyLanguage(textResult);
                 });
             });
+
+    private void identifyLanguage(String text) {
+        LanguageIdentifier languageIdentifier = LanguageIdentification.getClient();
+        languageIdentifier.identifyLanguage(text)
+                .addOnSuccessListener(new OnSuccessListener<String>() {
+                    @Override
+                    public void onSuccess(String languageCode) {
+                        String msg = "Language Code: ";
+                        if (languageCode.equals("und")) {
+                            msg += "Unknow";
+                            Log.i(TAG, "Can't identify language.");
+                        } else {
+                            msg += languageCode;
+                        }
+                        binding.txvLanguage.setText(msg);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Language identification failed: " + e.getMessage());
+                    }
+                });
+    }
 
     private void clearOldSelectedImage() {
         binding.imgvPreview.setImageDrawable(null);
